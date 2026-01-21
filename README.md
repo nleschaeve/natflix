@@ -42,3 +42,6 @@ Une liste infinie de films populaires ou récents
 
 ### Pied de page (Footer)
 Contient les mentions légales, les conditions d'utilisation, la politique de confidentialité et des liens vers les réseaux sociaux ou l'aide.
+
+## End points de l'API : 
+Connexion/Inscription, gestion du compte utilisateur, liste des contenus, récupération des genres, suggestion personnélisée selon l'utilisateur...
