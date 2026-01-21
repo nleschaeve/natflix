@@ -28,6 +28,7 @@ Son rôle est d'enregistrer, de modifier et de fournir les données
 Les technologies utilisées les plus courantes sont MySQL, PostgreSQL ou MongoDB
 
 ## Description de ce qui peut être mis sur une page d'accueil
+![Maquette de la page d'accueil](https://github.com/nleschaeve/netflix/blob/readMe/maquette_page_accueil.png)
 ### En tête (Header)
 Il contient le logo du site
 C'est le haut de la page, qui reste souvent visible lors de la navigation. Il peut contenir les boutons d'interration pour revenir à la page d'accueil de l'application
