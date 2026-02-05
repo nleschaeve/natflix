@@ -24,6 +24,17 @@ app.get('/api/health', (req, res) => {
     });
 });
 
+app.get('/api/movies', (req, res) => {
+    res.json({
+        success: true,
+        message: 'API Movies endpoint',
+        data: [
+            { id: 1, title: 'Inception', year: 2010 },
+            { id: 2, title: 'The Dark Knight', year: 2008 }
+        ]
+    });
+});
+
 // Démarrer le serveur
 app.listen(PORT, () => {
     console.log(`������� Server running on http://localhost:${PORT}`);
