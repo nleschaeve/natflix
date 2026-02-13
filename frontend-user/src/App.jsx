@@ -1,4 +1,5 @@
 import './App.css'
+import Button from './components/common/Button'
 
 function App() {
   return (
@@ -10,6 +11,9 @@ function App() {
         <p className="text-xl text-gray-400">
           Frontend User - React + Tailwind 4.1
         </p>
+        <Button>Cliquez-moi</Button>
+        <Button variant="secondary" size="lg">Grand bouton</Button>
+        <Button variant="outline" size="sm">Petit bouton</Button>
       </div>
     </div>
   )
