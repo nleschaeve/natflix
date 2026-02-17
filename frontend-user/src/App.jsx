@@ -1,23 +1,13 @@
 import './App.css'
-import Button from './components/common/Button'
+import Navbar from './components/common/Navbar'
+import Home from './pages/Home'
 import Footer from './components/layout/Footer'
 
 function App() {
   return (
-    <div>
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-6xl font-bold text-primary mb-4">
-            Hello Netflix 🎬
-          </h1>
-          <p className="text-xl text-gray-400">
-            Frontend User - React + Tailwind 4.1
-          </p>
-          <Button>Cliquez-moi</Button>
-          <Button variant="secondary" size="lg">Grand bouton</Button>
-          <Button variant="outline" size="sm">Petit bouton</Button>
-        </div>
-      </div>
+    <div className="w-full min-h-screen bg-black">
+      <Navbar/>
+      <Home/>
       <Footer/>
     </div>
   )
