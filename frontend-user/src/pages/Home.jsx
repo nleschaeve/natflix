@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import MovieHero from '../components/movies/MovieHero';
-import MovieList from '../components/movies/MovieList';
+import MovieCarousel from '../components/movies/MovieCarousel';
 import moviesData from '../../../data/movies.json';
 
 function Home() {
@@ -29,19 +29,13 @@ function Home() {
             <MovieHero movie={featuredMovie} />
 
             {/* Popular Movies Section */}
-            <section className="container mx-auto">
-                <MovieList title="Films Populaires" movies={popularMovies} />
-            </section>
+            <MovieCarousel title="Films Populaires" movies={popularMovies} />
 
             {/* Sci-Fi Movies Section */}
-            <section className="container mx-auto">
-                <MovieList title="Science-Fiction" movies={sciFiMovies} />
-            </section>
+            <MovieCarousel title="Science-Fiction" movies={sciFiMovies} />
 
             {/* Recent Movies Section */}
-            <section className="container mx-auto pb-12">
-                <MovieList title="Films Récents" movies={recentMovies} />
-            </section>
+            <MovieCarousel title="Films Récents" movies={recentMovies} />
         </div>
     );
 }

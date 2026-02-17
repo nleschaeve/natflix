@@ -12,7 +12,7 @@ const genreColors = {
 
 function MovieCard({ movie }) {
     return (
-        <div className="group relative overflow-hidden rounded-lg cursor-pointer transition-transform duration-300 hover:scale-105">
+        <div className="relative overflow-hidden rounded-lg cursor-pointer transition-transform duration-300 hover:scale-105 group/card">
             {/* Image principale */}
             <div className="relative aspect-[2/3]">
                 <img
@@ -34,7 +34,7 @@ function MovieCard({ movie }) {
                 </div>
             </div>
             {/* Overlay au hover */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                 <h3 className="text-xl font-bold mb-2">{movie.title}</h3>
                 <div className="flex items-center space-x-3 mb-3 text-sm">
                     <span className="text-green-400 font-semibold">{movie.rating}/10</span>
