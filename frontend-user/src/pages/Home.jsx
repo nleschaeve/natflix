@@ -1,11 +1,17 @@
 import { useState, useEffect, useMemo } from 'react';
+import Navbar from '../components/common/Navbar';
+import Footer from '../components/layout/Footer';
 import MovieHero from '../components/movies/MovieHero';
 import MovieCarousel from '../components/movies/MovieCarousel';
+import MovieFilter from '../components/movies/MovieFilter';
+import MovieList from '../components/movies/MovieList';
 import moviesData from '../../../data/movies.json';
 
 function Home() {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [allMovies] = useState(moviesData);
+    const [filteredMovies, setFilteredMovies] = useState([]);
 
     // Popular movies (5 random movies)
     const popularMovies = useMemo(() => {
@@ -30,6 +36,7 @@ function Home() {
             // Simuler un délai réseau
             await new Promise(resolve => setTimeout(resolve, 1000));
             setMovies(moviesData);
+            setFilteredMovies(moviesData);
             setLoading(false);
         };
         loadMovies();
@@ -44,8 +51,23 @@ function Home() {
 
     return (
         <div className="w-full min-h-screen bg-black">
+            <Navbar />
             {/* Featured Movie Hero */}
             <MovieHero movie={featuredMovie} />
+
+            <div className="container mx-auto">
+                {/* Movie Filter */}
+                <MovieFilter
+                    movies={allMovies}
+                    onFilter={setFilteredMovies}
+                />
+                
+                {/* Filtered Movies List */}
+                <MovieList
+                    title="Films disponibles"
+                    movies={filteredMovies}
+                />
+            </div>
 
             {/* Popular Movies Section */}
             <MovieCarousel title="Films Populaires" movies={popularMovies} />
@@ -55,6 +77,8 @@ function Home() {
 
             {/* Recent Movies Section */}
             <MovieCarousel title="Films Récents" movies={recentMovies} />
+
+            <Footer />
         </div>
     );
 }
