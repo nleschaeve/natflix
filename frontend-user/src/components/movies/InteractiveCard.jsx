@@ -40,3 +40,5 @@ function InteractiveCard({ movie }) {
         </div>
     );
 }
+
+export default InteractiveCard;

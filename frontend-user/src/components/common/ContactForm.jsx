@@ -34,3 +34,5 @@ function ContactForm() {
         </form>
     );
 }
+
+export default ContactForm;
