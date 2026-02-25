@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Button from '../common/Button';
 
 // Couleurs par genre
@@ -11,6 +12,21 @@ const genreColors = {
 };
 
 function MovieCard({ movie }) {
+    // TODO : Créez les variables d'état nécessaires et initialisez-les
+    const [isLiked, setIsLiked] = useState(false);
+    const [likes, setLikes] = useState(0);
+
+    // TODO : Créez la fonction qui permet au clic sur le bouton de liker une seule fois, sinon on enlève le like
+    const toggleLike = () => {
+        if (isLiked) {
+            setIsLiked(false);
+            setLikes(likes - 1);
+        } else {
+            setIsLiked(true);
+            setLikes(likes + 1);
+        }
+    };
+
     // Destructurer directement les paramètres
     const { title, description, poster, genre, year, duration, price, rating } = movie;
     return (
@@ -53,6 +69,12 @@ function MovieCard({ movie }) {
                     <Button variant="outline" size="sm" className="flex-1">
                         + Info
                     </Button>
+                    <button 
+                        onClick={toggleLike}
+                        className={`px-4 py-2 rounded font-semibold transition-colors ${isLiked ? 'bg-red-500 text-white' : 'bg-gray-700 text-white hover:bg-gray-600'}`}
+                    >
+                        {isLiked ? '❤' : '🤍'} {likes}
+                    </button>
                 </div>
             </div>
         </div>
