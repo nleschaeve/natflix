@@ -54,6 +54,12 @@ function MovieCard({ movie }) {
             {/* Overlay au hover */}
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                 <h3 className="text-xl font-bold mb-2">{title}</h3>
+                <button 
+                    onClick={toggleLike}
+                    className={`px-4 py-2 rounded font-semibold transition-colors ${isLiked ? 'bg-red-500 text-white' : 'bg-gray-700 text-white hover:bg-gray-600'}`}
+                >
+                    {isLiked ? '❤' : '🤍'} {likes}
+                </button>
                 <div className="flex items-center space-x-3 mb-3 text-sm">
                     <span className="text-green-400 font-semibold">{rating}/10</span>
                     <span className="text-gray-400">{year}</span>
@@ -69,12 +75,6 @@ function MovieCard({ movie }) {
                     <Button variant="outline" size="sm" className="flex-1">
                         + Info
                     </Button>
-                    <button 
-                        onClick={toggleLike}
-                        className={`px-4 py-2 rounded font-semibold transition-colors ${isLiked ? 'bg-red-500 text-white' : 'bg-gray-700 text-white hover:bg-gray-600'}`}
-                    >
-                        {isLiked ? '❤' : '🤍'} {likes}
-                    </button>
                 </div>
             </div>
         </div>

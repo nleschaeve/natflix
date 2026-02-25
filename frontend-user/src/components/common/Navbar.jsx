@@ -1,13 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SearchBar from './SearchBar';
 
 function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
-    // Note : useEffect sera vu au TP 03
-    // Pour l'instant, version statique
+    
+    useEffect(() => {
+        const handleScroll = () => setIsScrolled(window.scrollY > 50);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+    
     return (
         <nav className={`fixed top-0 w-full z-50 transition-colors duration-300 ${
-            isScrolled ? 'bg-black' : 'bg-gradient-to-b from-black/80 to-transparent'
+            isScrolled ? 'bg-black' : 'bg-transparent'
         }`}>
             <div className="container mx-auto px-4 py-4">
                 <div className="flex items-center justify-between">
@@ -18,13 +23,13 @@ function Navbar() {
                         {/* Navigation Links */}
                         <ul className="hidden md:flex space-x-6">
                             <li>
-                                <a href="#" className="hover:text-gray-300 transition-colors">Accueil</a>
+                                <a href="#" className="text-white hover:text-primary transition-colors">Accueil</a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-gray-300 transition-colors">Films</a>
+                                <a href="#" className="text-white hover:text-primary transition-colors">Films</a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-gray-300 transition-colors">Mes locations</a>
+                                <a href="#" className="text-white hover:text-primary transition-colors">Mes locations</a>
                             </li>
                         </ul>
                     </div>
