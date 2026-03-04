@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Button from '../common/Button';
+import { useCart } from '../../context/CartContext';
 
 // Couleurs par genre
 const genreColors = {
@@ -15,6 +16,7 @@ function MovieCard({ movie }) {
     // TODO : Créez les variables d'état nécessaires et initialisez-les
     const [isLiked, setIsLiked] = useState(false);
     const [likes, setLikes] = useState(0);
+    const { addToCart } = useCart();
 
     // TODO : Créez la fonction qui permet au clic sur le bouton de liker une seule fois, sinon on enlève le like
     const toggleLike = () => {
@@ -69,7 +71,7 @@ function MovieCard({ movie }) {
                     {description}
                 </p>
                 <div className="flex flex-col sm:flex-row gap-2">
-                    <Button size="sm" className="flex-1">
+                    <Button size="sm" className="flex-1" onClick={() => addToCart(movie)}>
                         ▶ Louer {price}€
                     </Button>
                     <Button variant="outline" size="sm" className="flex-1">
