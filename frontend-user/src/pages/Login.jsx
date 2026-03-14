@@ -1,6 +1,9 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function LoginForm() {
+	const navigate = useNavigate();
+
 	// TODO : Créez la variable d'état pour stocker dans un objet le mail et le mot de passe et initialisez-la
 	const [formData, setFormData] = useState({
 		email: '',
@@ -19,6 +22,7 @@ function LoginForm() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		console.log(formData);
+		navigate('/');
 	};
 
 	return (
