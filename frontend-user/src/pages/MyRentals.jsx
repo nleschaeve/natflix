@@ -46,6 +46,16 @@ function MyRentals() {
                                     <h2 className="text-lg font-bold mb-2">{movie.title}</h2>
                                     <p className="text-sm text-gray-300 mb-1">{movie.genre} • {movie.year}</p>
                                     <p className="text-sm text-gray-400 mb-3">Duree: {movie.duration} min • Note: {movie.rating}/10</p>
+                                    {movie.rentalDate && (
+                                        <p className="text-xs text-gray-500 mb-1">
+                                            Loue le: {new Date(movie.rentalDate).toLocaleDateString('fr-FR')}
+                                        </p>
+                                    )}
+                                    {movie.expiryDate && (
+                                        <p className="text-xs text-gray-500 mb-3">
+                                            Expire le: {new Date(movie.expiryDate).toLocaleDateString('fr-FR')}
+                                        </p>
+                                    )}
                                     <div className="flex items-center justify-between">
                                         <span className="text-primary font-bold">{movie.price}€</span>
                                         <Button size="sm" variant="outline" onClick={() => handleRemoveRental(movie.id)}>

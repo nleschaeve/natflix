@@ -5,18 +5,45 @@ import Navbar from '../components/common/Navbar';
 import Footer from '../components/layout/Footer';
 import Button from '../components/common/Button';
 import MovieDescription from '../components/movies/MovieDescription';
-import { addRental } from '../utils/rentalsStorage';
+import { getRentals } from '../utils/rentalsStorage';
 
 function MovieDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [movie, setMovie] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [notification, setNotification] = useState(null);
 
-    const handleRentClick = () => {
-        if (movie) {
-            addRental(movie);
+    const handleRent = () => {
+        if (!movie) {
+            return;
         }
+
+        const isAuthenticated = localStorage.getItem('user') !== null;
+        if (!isAuthenticated) {
+            navigate('/login');
+            return;
+        }
+
+        const rental = {
+            ...movie,
+            rentalDate: new Date().toISOString(),
+            expiryDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+        };
+
+        const existingRentals = getRentals();
+        const alreadyRented = existingRentals.some((item) => item.id === movie.id);
+
+        if (alreadyRented) {
+            setNotification({ type: 'error', message: 'Vous avez deja loue ce film' });
+            return;
+        }
+
+        localStorage.setItem('rentals', JSON.stringify([...existingRentals, rental]));
+        setNotification({ type: 'success', message: 'Film loue avec succes !' });
+        setTimeout(() => {
+            navigate('/my-rentals');
+        }, 2000);
     };
 
     useEffect(() => {
@@ -49,6 +76,16 @@ function MovieDetail() {
     return (
         <div className="min-h-screen bg-black text-white">
             <Navbar />
+
+            {notification && (
+                <div
+                    className={`fixed top-20 right-4 px-6 py-3 rounded-lg shadow-xl z-50 ${
+                        notification.type === 'success' ? 'bg-green-500' : 'bg-red-500'
+                    }`}
+                >
+                    {notification.message}
+                </div>
+            )}
 
             {/* Backdrop pleine page + bouton retour */}
             <div className="relative h-screen w-full">
@@ -91,11 +128,11 @@ function MovieDetail() {
                         <h2 className="text-3xl font-bold mb-4">Synopsis</h2>
                         <MovieDescription description={movie.description} />
                         <div className="mt-6">
-                            <Button size="lg" onClick={handleRentClick}>
+                            <Button size="lg" onClick={handleRent} className="mb-8">
                                 <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                                 </svg>
-                                Louer pour {movie.price}€
+                                🎬Louer pour {movie.price}€
                             </Button>
                         </div>
                         <div className="mt-8 p-10 overflow-hidden rounded-xl bg-gray-900 text-gray-300">
