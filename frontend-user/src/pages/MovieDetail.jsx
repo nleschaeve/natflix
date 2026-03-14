@@ -5,12 +5,19 @@ import Navbar from '../components/common/Navbar';
 import Footer from '../components/layout/Footer';
 import Button from '../components/common/Button';
 import MovieDescription from '../components/movies/MovieDescription';
+import { addRental } from '../utils/rentalsStorage';
 
 function MovieDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [movie, setMovie] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    const handleRentClick = () => {
+        if (movie) {
+            addRental(movie);
+        }
+    };
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -84,7 +91,7 @@ function MovieDetail() {
                         <h2 className="text-3xl font-bold mb-4">Synopsis</h2>
                         <MovieDescription description={movie.description} />
                         <div className="mt-6">
-                            <Button size="lg">
+                            <Button size="lg" onClick={handleRentClick}>
                                 <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                                 </svg>

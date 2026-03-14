@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import Button from '../common/Button';
 import { useCart } from '../../context/CartContext';
+import { addRental } from '../../utils/rentalsStorage';
 
 // Couleurs par genre
 const genreColors = {
@@ -37,6 +38,7 @@ function MovieCard({ movie }) {
         event.preventDefault();
         event.stopPropagation();
         addToCart(movie);
+        addRental(movie);
     };
 
     // Destructurer directement les paramètres
@@ -49,7 +51,7 @@ function MovieCard({ movie }) {
                 className="absolute inset-0 z-10"
             />
             {/* Image principale */}
-            <div className="relative aspect-[2/3]">
+            <div className="relative aspect-2/3">
                 <img
                     src={poster}
                     alt={title}
@@ -69,7 +71,7 @@ function MovieCard({ movie }) {
                 </div>
             </div>
             {/* Overlay au hover */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+            <div className="absolute inset-0 bg-linear-to-t from-black via-black/70 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
                 <h3 className="text-xl font-bold mb-2">{title}</h3>
                 <button 
                     onClick={toggleLike}

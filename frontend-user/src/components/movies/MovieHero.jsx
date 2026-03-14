@@ -1,5 +1,6 @@
 import Button from '../common/Button';
 import { useNavigate } from 'react-router-dom';
+import { addRental } from '../../utils/rentalsStorage';
 
 function MovieHero({ movie }) {
     const navigate = useNavigate();
@@ -9,6 +10,10 @@ function MovieHero({ movie }) {
 
     const handleMoreInfo = () => {
         navigate(`/movie/${id}`);
+    };
+
+    const handleRentClick = () => {
+        addRental(movie);
     };
 
     return (
@@ -43,7 +48,7 @@ function MovieHero({ movie }) {
                     
                     {/* Actions */}
                     <div className="flex flex-col sm:flex-row gap-4">
-                        <Button size="lg" className="shadow-2xl">
+                        <Button size="lg" className="shadow-2xl" onClick={handleRentClick}>
                             <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                             </svg>
