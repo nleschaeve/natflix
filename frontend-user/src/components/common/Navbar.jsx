@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { NavLink } from 'react-router-dom'
 import SearchBar from '../movies/SearchBar';
 import CartButton from './CartButton';
 import moviesData from '../../../../data/movies.json';
@@ -20,18 +21,18 @@ function Navbar() {
                 <div className="flex items-center justify-between">
                     {/* Logo */}
                     <div className="flex items-center space-x-8">
-                        <h1 className="text-primary text-3xl font-bold tracking-tight">NETFLIX</h1>
+                        <NavLink to="/" className="text-primary text-3xl font-bold tracking-tight">NETFLIX</NavLink>
 
                         {/* Navigation Links */}
                         <ul className="hidden md:flex space-x-6">
                             <li>
-                                <a href="#" className="text-white hover:text-primary transition-colors">Accueil</a>
+                                <NavLink to="/" className={({isActive}) => isActive ? 'text-primary font-bold' :'text-gray-300 hover:text-white'}>Accueil</NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="/my-rentals" className={({isActive}) => isActive ? 'text-primary font-bold' : 'text-gray-300 hover:text-white'}>Mes locations</NavLink>
                             </li>
                             <li>
                                 <a href="#" className="text-white hover:text-primary transition-colors">Films</a>
-                            </li>
-                            <li>
-                                <a href="#" className="text-white hover:text-primary transition-colors">Mes locations</a>
                             </li>
                         </ul>
                     </div>

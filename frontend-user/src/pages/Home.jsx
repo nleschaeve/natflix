@@ -20,7 +20,7 @@ function Home() {
     }, [allMovies]);
 
     return (
-        <div>
+        <div className="w-full min-h-screen bg-black">
             <Navbar />
             <MovieHero movie={allMovies[0]} />
             <div className="container mx-auto">

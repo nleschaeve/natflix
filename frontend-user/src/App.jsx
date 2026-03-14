@@ -1,19 +1,27 @@
-import './App.css'
-import Navbar from './components/common/Navbar'
-import Home from './pages/Home'
-import Footer from './components/layout/Footer'
-import { CartProvider } from './context/CartContext'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import MovieDetail from './pages/MovieDetail';
+import MyRentals from './pages/MyRentals';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import NotFound from './pages/NotFound';
+import { CartProvider } from './context/CartContext';
 
 function App() {
   return (
     <CartProvider>
-      <div className="w-full min-h-screen bg-black">
-        <Navbar/>
-        <Home/>
-        <Footer/>
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/movie/:id" element={<MovieDetail />} />
+          <Route path="/my-rentals" element={<MyRentals />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
     </CartProvider>
-  )
+  );
 }
 
 export default App

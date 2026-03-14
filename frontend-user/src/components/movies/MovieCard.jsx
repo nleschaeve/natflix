@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import Button from '../common/Button';
 import { useCart } from '../../context/CartContext';
 
@@ -19,7 +20,10 @@ function MovieCard({ movie }) {
     const { addToCart } = useCart();
 
     // TODO : Créez la fonction qui permet au clic sur le bouton de liker une seule fois, sinon on enlève le like
-    const toggleLike = () => {
+    const toggleLike = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
         if (isLiked) {
             setIsLiked(false);
             setLikes(likes - 1);
@@ -29,10 +33,21 @@ function MovieCard({ movie }) {
         }
     };
 
+    const handleRentClick = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        addToCart(movie);
+    };
+
     // Destructurer directement les paramètres
     const { title, description, poster, genre, year, duration, price, rating } = movie;
     return (
         <div className="relative overflow-hidden rounded-lg cursor-pointer transition-transform duration-300 hover:scale-105 group/card">
+            <NavLink
+                to={`/movie/${movie.id}`}
+                aria-label={`Voir les details de ${title}`}
+                className="absolute inset-0 z-10"
+            />
             {/* Image principale */}
             <div className="relative aspect-[2/3]">
                 <img
@@ -58,7 +73,7 @@ function MovieCard({ movie }) {
                 <h3 className="text-xl font-bold mb-2">{title}</h3>
                 <button 
                     onClick={toggleLike}
-                    className={`px-4 py-2 rounded font-semibold transition-colors ${isLiked ? 'bg-red-500 text-white' : 'bg-gray-700 text-white hover:bg-gray-600'}`}
+                    className={`relative z-20 px-4 py-2 rounded font-semibold transition-colors ${isLiked ? 'bg-red-500 text-white' : 'bg-gray-700 text-white hover:bg-gray-600'}`}
                 >
                     {isLiked ? '❤' : '🤍'} {likes}
                 </button>
@@ -70,8 +85,8 @@ function MovieCard({ movie }) {
                 <p className="text-sm text-gray-300 mb-4 line-clamp-2">
                     {description}
                 </p>
-                <div className="flex flex-col sm:flex-row gap-2">
-                    <Button size="sm" className="flex-1" onClick={() => addToCart(movie)}>
+                <div className="relative z-20 flex flex-col sm:flex-row gap-2">
+                    <Button size="sm" className="flex-1" onClick={handleRentClick}>
                         ▶ Louer {price}€
                     </Button>
                     <Button variant="outline" size="sm" className="flex-1">
