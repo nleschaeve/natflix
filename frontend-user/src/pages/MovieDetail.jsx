@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import moviesData from '../../../data/movies.json';
 import Navbar from '../components/common/Navbar';
+import Breadcrumb from '../components/common/Breadcrumb';
 import Footer from '../components/layout/Footer';
 import Button from '../components/common/Button';
 import MovieDescription from '../components/movies/MovieDescription';
@@ -76,6 +77,16 @@ function MovieDetail() {
     return (
         <div className="min-h-screen bg-black text-white">
             <Navbar />
+
+            <div className="container mx-auto px-4 pt-24">
+                <Breadcrumb
+                    items={[
+                        { label: 'Films', path: '/' },
+                        { label: movie.genre, path: `/?genre=${movie.genre}` },
+                        { label: movie.title }
+                    ]}
+                />
+            </div>
 
             {notification && (
                 <div
