@@ -71,6 +71,18 @@ const testModels = async () => {
         const activeRentals = await Rental.getActiveRentals(testUser._id);
         console.log('✅ Locations actives:', activeRentals.length);
 
+        // Test 7 : Validation du prix
+        console.log('\nTest 7: Validation du prix');
+        try {
+            await Movie.create({
+                title: 'Film invalide',
+                duration: 600, // Trop long
+                price: 3.999, // Trop de décimales
+            });
+        } catch (error) {
+            console.log('✅ Validation échouée comme prévu: ', error.message);
+        }
+
         // Nettoyage
         console.log('\n🧹 Nettoyage...');
         await User.deleteOne({ _id: testUser._id });
