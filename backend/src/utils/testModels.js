@@ -83,6 +83,21 @@ const testModels = async () => {
             console.log('✅ Validation échouée comme prévu: ', error.message);
         }
 
+        // Test 8: Méthode getByGenre
+        console.log('\nTest 8: Obtenir les films par genre');
+        const sciFiMovies = await Movie.getByGenre("Science-Fiction");
+        console.log('✅ Films Sci-Fi:', sciFiMovies.length);
+
+        // Test 9: Méthode getByPriceRange
+        console.log('\nTest 9: Obtenir les films dans une fourchette de prix');
+        const affordableMovies = await Movie.getByPriceRange(0, 4);
+        console.log('✅ Films à moins de 4€:', affordableMovies.length);
+
+        // Test 10: Méthode getStatsByGenre
+        console.log('\nTest 10: Statistiques par genre');
+        const stats = await Movie.getStatsByGenre();
+        console.log('✅ Statistiques par genre:', stats);
+
         // Nettoyage
         console.log('\n🧹 Nettoyage...');
         await User.deleteOne({ _id: testUser._id });
