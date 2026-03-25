@@ -7,16 +7,27 @@ import {
     deleteMovie,
     getMovieStats,
     getSimilarMovies
-} from '../controllers/movie.controller.js';
+} from '../controller/movie.controller.js';
 // import { protect, admin } from '../middleware/auth.middleware.js'; // Séance 9
 
 const router = express.Router();
 
+// Intercepte les paramètres transmis via la route, la query string et le body.
+const interceptRequestParams = (req, res, next) => {
+    req.interceptedInputs = {
+        params: { ...req.params },
+        query: { ...req.query },
+        body: { ...req.body }
+    };
+
+    next();
+};
+
 // Routes publiques
-router.get('/', getAllMovies);
-router.get('/stats', getMovieStats); // TODO: Protéger avec admin (séance 9)
-router.get('/:id', getMovieById);
-router.get('/:id/similar', getSimilarMovies);
+router.get('/', interceptRequestParams, getAllMovies);
+router.get('/stats', interceptRequestParams, getMovieStats); // TODO: Protéger avec admin (séance 9)
+router.get('/:id', interceptRequestParams, getMovieById);
+router.get('/:id/similar', interceptRequestParams, getSimilarMovies);
 
 // Routes protégées admin (sera activé séance 9)
 // router.post('/', protect, admin, createMovie);
@@ -24,8 +35,8 @@ router.get('/:id/similar', getSimilarMovies);
 // router.delete('/:id', protect, admin, deleteMovie);
 
 // Routes temporaires sans authentification (pour tester)
-router.post('/', createMovie);
-router.put('/:id', updateMovie);
-router.delete('/:id', deleteMovie);
+router.post('/', interceptRequestParams, createMovie);
+router.put('/:id', interceptRequestParams, updateMovie);
+router.delete('/:id', interceptRequestParams, deleteMovie);
 
 export default router;
