@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/database.js';
 import mongoose from "mongoose";
+import movieRoutes from './routes/movie.routes.js';
 
 // Charger les variables d'environnement
 dotenv.config();
@@ -54,16 +55,7 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-app.get('/api/movies', (req, res) => {
-    res.json({
-        success: true,
-        message: 'API Movies endpoint',
-        data: [
-            { id: 1, title: 'Inception', year: 2010 },
-            { id: 2, title: 'The Dark Knight', year: 2008 }
-        ]
-    });
-});
+app.use('/api/movies', movieRoutes);
 
 // Gestion des erreurs 404
 app.use((req, res) => {
