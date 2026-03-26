@@ -1,77 +1,113 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/common/Navbar';
-import Footer from '../components/layout/Footer';
-import Button from '../components/common/Button';
-import { getRentals, removeRental } from '../utils/rentalsStorage';
+import { Link, useNavigate } from "react-router-dom";
+import Navbar from "../components/common/Navbar";
+import Footer from "../components/layout/Footer";
+import Button from "../components/common/Button";
+import { useCart } from "../context/CartContext";
 
 function MyRentals() {
-    const navigate = useNavigate();
-    const [rentals, setRentals] = useState(() => getRentals());
+  const navigate = useNavigate();
+  const { rentals } = useCart();
 
-    const handleRemoveRental = (id) => {
-        removeRental(id);
-        setRentals((prevRentals) => prevRentals.filter((movie) => movie.id !== id));
-    };
+  // Filtrer les locations actives (non expirees)
+  const activeRentals = rentals.filter(
+    (rental) => new Date(rental.expiryDate) >= new Date(),
+  );
+  // Filtrer les locations expirees
+  const expiredRentals = rentals.filter(
+    (rental) => new Date(rental.expiryDate) < new Date(),
+  );
 
-    return (
-        <div className="min-h-screen bg-black text-white">
-            <Navbar />
+  return (
+    <div className="min-h-screen bg-black text-white">
+      <Navbar />
 
-            <main className="container mx-auto px-4 pt-28 pb-12">
-                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-8">
-                    <h1 className="text-3xl md:text-4xl font-bold">Mes locations</h1>
-                    <Button variant="secondary" onClick={() => navigate('/')}>
-                        Decouvrir des films
-                    </Button>
+      <div className="container mx-auto px-4 py-24">
+        <h1 className="text-4xl font-bold mb-8">Mes locations</h1>
+
+        {/* Locations actives */}
+        {activeRentals.length > 0 && (
+          <div className="mb-12">
+            <h2 className="text-2xl font-bold mb-4 text-green-400">
+              Actives ({activeRentals.length})
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+              {activeRentals.map((rental) => (
+                <div key={rental.id} className="group relative">
+                  <Link to={`/movie/${rental.movieId}`}>
+                    <img
+                      src={rental.poster}
+                      alt={rental.title}
+                      className="w-full rounded-lg group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="mt-2">
+                      <h3 className="font-semibold truncate">{rental.title}</h3>
+                      <p className="text-sm text-green-400">
+                        Expire dans{" "}
+                        {Math.ceil(
+                          (new Date(rental.expiryDate) - new Date()) /
+                            (1000 * 60 * 60 * 24),
+                        )}{" "}
+                        jour(s)
+                      </p>
+                    </div>
+                  </Link>
                 </div>
+              ))}
+            </div>
+          </div>
+        )}
 
-                {rentals.length === 0 ? (
-                    <div className="rounded-xl border border-gray-800 bg-gray-900/60 p-8 text-center">
-                        <p className="text-xl pb-10 font-semibold">Aucun film en location pour le moment.</p>
-                        <Button variant="primary" onClick={() => navigate('/')}>
-                            Decouvrir des films
-                        </Button>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {rentals.map((movie) => (
-                            <article key={movie.id} className="rounded-xl overflow-hidden bg-gray-900 border border-gray-800 shadow-xl">
-                                <img
-                                    src={movie.poster}
-                                    alt={movie.title}
-                                    className="w-full h-80 object-cover"
-                                />
-                                <div className="p-4">
-                                    <h2 className="text-lg font-bold mb-2">{movie.title}</h2>
-                                    <p className="text-sm text-gray-300 mb-1">{movie.genre} • {movie.year}</p>
-                                    <p className="text-sm text-gray-400 mb-3">Duree: {movie.duration} min • Note: {movie.rating}/10</p>
-                                    {movie.rentalDate && (
-                                        <p className="text-xs text-gray-500 mb-1">
-                                            Loue le: {new Date(movie.rentalDate).toLocaleDateString('fr-FR')}
-                                        </p>
-                                    )}
-                                    {movie.expiryDate && (
-                                        <p className="text-xs text-gray-500 mb-3">
-                                            Expire le: {new Date(movie.expiryDate).toLocaleDateString('fr-FR')}
-                                        </p>
-                                    )}
-                                    <div className="flex items-center justify-between">
-                                        <span className="text-primary font-bold">{movie.price}€</span>
-                                        <Button size="sm" variant="outline" onClick={() => handleRemoveRental(movie.id)}>
-                                            Retirer
-                                        </Button>
-                                    </div>
-                                </div>
-                            </article>
-                        ))}
-                    </div>
-                )}
-            </main>
+        {/* Locations expirees */}
+        {expiredRentals.length > 0 && (
+          <div>
+            <h2 className="text-2xl font-bold mb-4 text-gray-400">
+              Expirees ({expiredRentals.length})
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+              {expiredRentals.map((rental) => (
+                <div key={rental.id} className="opacity-50">
+                  <img
+                    src={rental.poster}
+                    alt={rental.title}
+                    className="w-full rounded-lg grayscale"
+                  />
+                  <div className="mt-2">
+                    <h3 className="font-semibold truncate">{rental.title}</h3>
+                    <p className="text-sm text-red-400">Expire</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
-            <Footer />
-        </div>
-    );
+        {/* Aucune location */}
+        {rentals.length === 0 && (
+          <div className="text-center py-20">
+            <svg
+              className="w-24 h-24 mx-auto mb-6 text-gray-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z"
+              />
+            </svg>
+            <p className="text-2xl text-gray-400 mb-6">
+              Aucune location pour le moment
+            </p>
+            <Button onClick={() => navigate("/")}>Decouvrir des films</Button>
+          </div>
+        )}
+      </div>
+
+      <Footer />
+    </div>
+  );
 }
 
 export default MyRentals;

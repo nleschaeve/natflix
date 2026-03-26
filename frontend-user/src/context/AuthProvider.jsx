@@ -1,19 +1,30 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
+const USER_STORAGE_KEY = "user";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // TODO : Charger l'utilisateur depuis localStorage au démarrage
   useEffect(() => {
-    // TODO
+    try {
+      const storedUser = localStorage.getItem(USER_STORAGE_KEY);
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      }
+    } catch {
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   // Fonction de connexion
   const login = async (email, password) => {
     try {
+      setLoading(true);
       // TODO: Sera remplacé plus tard par la vraie API (séance 8 ou 9 , ça dépend ;-))
       // Simulation
       await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -26,23 +37,45 @@ export function AuthProvider({ children }) {
 
       // TODO : Enregistrer les données de l'utilisateur dans le localStorage
       setUser(mockUser);
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(mockUser));
 
       return { success: true };
     } catch (error) {
       return { success: false, error: error.message };
+    } finally {
+      setLoading(false);
     }
   };
 
   // Fonction d'inscription
   const register = async (name, email, password) => {
-    // TODO : inspirez-vous de plus haut
-    return { success: false };
+    try {
+      setLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      const newUser = {
+        id: Date.now(),
+        name,
+        email,
+        avatar: `https://ui-avatars.com/api/?name=${name}&background=e50914&color=fff`,
+      };
+
+      setUser(newUser);
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(newUser));
+
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: error.message };
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Fonction de déconnexion
   const logout = () => {
     // TODO : Supprimez l’utilisateur enregistré en mémoire
     setUser(null);
+    localStorage.removeItem(USER_STORAGE_KEY);
   };
 
   // Vérifier si l'utilisateur est connecté
@@ -57,6 +90,7 @@ export function AuthProvider({ children }) {
 
     // TODO : Mettre à jour et stocker l’utilisateur
     setUser(updatedUser);
+    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(updatedUser));
   };
 
   // On met a disposition les elements pour etre utilises dans les composants
